@@ -1,4 +1,6 @@
 AyahBlocks 📖
+
+
 AyahBlocks is a modern, web-based Hifz (memorization) assistant designed to help users master the Holy Quran through a scientifically-backed, multi-sensory approach. By combining visual breakdown and auditory repetition, it caters to both visual and auditory learners for more effective retention.
 
 ✨ Features
