@@ -46,10 +46,18 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        .theme-toggle {
-            position: absolute;
-            top: 20px;
-            left: 20px;
+        /* --- Header/Nav Styling --- */
+        .header-nav {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
             background: var(--container-bg);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
@@ -58,16 +66,67 @@
             cursor: pointer;
             font-size: 20px;
             box-shadow: var(--shadow);
-            z-index: 1000;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .bismillah {
             font-size: clamp(28px, 8vw, 48px);
             color: var(--text-primary);
-            margin-top: 20px;
-            margin-bottom: 25px;
+            margin-top: 5px;
+            margin-bottom: 5px;
             display: block;
             text-align: center;
+            width: 100%;
+        }
+
+        /* --- Modal Styles (Fixed for Small Screens) --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            direction: ltr;
+        }
+
+        .modal-content {
+            background-color: var(--container-bg);
+            margin: 20px auto; /* Reduced margin for mobile */
+            padding: clamp(15px, 5vw, 30px); /* Responsive padding */
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 700px;
+            border-radius: 20px;
+            max-height: 85vh; /* Taller on mobile */
+            overflow-y: auto;
+            text-align: left;
+            font-family: sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            box-shadow: var(--shadow);
+            box-sizing: border-box; /* Ensures padding doesn't break width */
+        }
+
+        .modal-content h2 { color: var(--accent-color); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; font-size: 1.5rem; }
+        .modal-content h3 { font-size: 1.1rem; margin-top: 20px; }
+        .modal-content ul { padding-left: 20px; }
+        .modal-content li { margin-bottom: 10px; font-size: 0.95rem; }
+
+        .close-modal {
+            color: var(--text-secondary);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
         }
 
         .disclaimer-box {
@@ -79,6 +138,7 @@
             font-size: 15px; 
             text-align: center;
             direction: ltr;    
+            margin-top: 15px;
             margin-bottom: 30px;
             max-width: 1000px;
             line-height: 1.7;
@@ -222,7 +282,6 @@
             transition: transform 0.2s ease;
         }
 
-        /* --- Slider Bar Styles (Repeat & Speed) --- */
         .slider-bar-container {
             width: 100%;
             max-width: 500px;
@@ -244,32 +303,10 @@
 
         .slider-current { color: var(--accent-color); display: flex; align-items: center; gap: 5px; }
 
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            background: transparent;
-        }
-
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
         input[type=range]:focus { outline: none; }
-
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 6px;
-            cursor: pointer;
-            background: var(--border-color);
-            border-radius: 3px;
-        }
-
-        input[type=range]::-webkit-slider-thumb {
-            height: 18px;
-            width: 18px;
-            border-radius: 50%;
-            background: var(--accent-color);
-            cursor: pointer;
-            -webkit-appearance: none;
-            margin-top: -6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; cursor: pointer; background: var(--border-color); border-radius: 3px; }
+        input[type=range]::-webkit-slider-thumb { height: 18px; width: 18px; border-radius: 50%; background: var(--accent-color); cursor: pointer; -webkit-appearance: none; margin-top: -6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
@@ -299,7 +336,6 @@
 
         .loading { color: #10b981; margin-bottom: 10px; display: none; font-weight: bold; }
 
-        /* --- Social Footer --- */
         .share-section {
             margin-top: 50px;
             padding: 30px 20px;
@@ -344,8 +380,37 @@
 </head>
 <body>
 
-<button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌙</button>
 <div class="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+
+<div class="header-nav">
+    <button class="nav-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle Dark Mode">🌙</button>
+    <button class="nav-btn" onclick="openReadme()" title="How to Use">❓</button>
+</div>
+
+<div id="readmeModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeReadme()">&times;</span>
+        <h2>AyahBlocks Guide 📖</h2>
+        <p><strong>AyahBlocks</strong> is a modern Hifz aid designed for both visual and auditory learners.</p>
+        
+        <h3>✨ Core Features</h3>
+        <ul>
+            <li><strong>9-Tile Breakdown:</strong> Verses are divided into 9 blocks. Click a block to hide/reveal text to test your visual memory.</li>
+            <li><strong>1x–100x Repetition:</strong> Use the repeat slider to loop an ayah up to 100 times.</li>
+            <li><strong>Range Control:</strong> Set a start and end ayah to repeat entire sections.</li>
+            <li><strong>Live Info Bar:</strong> View the Juz, Hizb, Page, and Line number for every verse instantly.</li>
+            <li><strong>Language Support:</strong> Choose between English, Indonesian, and more for better understanding.</li>
+        </ul>
+
+        <h3>🚀 Quick Start</h3>
+        <p>1. Choose a <strong>Reciter</strong> and your <strong>Language</strong>.<br>
+           2. Select a <strong>Surah</strong> and <strong>Ayah</strong>.<br>
+           3. Set the <strong>Repeat</strong> slider (e.g., 20x) and press <strong>Play</strong>.<br>
+           4. Interact with the tiles while listening to solidify your memorization.</p>
+           
+        <p><small><em>Developed to help the Ummah master the words of Allah, step-by-step.</em></small></p>
+    </div>
+</div>
 
 <div class="disclaimer-box">
     <strong>DISCLAIMER:</strong> This free tool is strictly for memorization assistance. The block-by-block format is a learning aid and is <strong>not</strong> a word-for-word translation. It is <strong>not</strong> intended to interpret or change the meaning of the Holy Quran. For accurate translation and Tafsir, please refer to <strong>verified scholarly sources</strong>. Do <strong>not</strong> use this tool as a primary religious reference.
@@ -469,10 +534,16 @@
     const wordGrid = document.getElementById('wordGrid');
     const infoBar = document.getElementById('infoBar');
     const themeToggle = document.getElementById('themeToggle');
+    const readmeModal = document.getElementById('readmeModal');
 
     let surahData = [];
     let currentRepeatCount = 0;
     let isRangePlaying = false;
+
+    // Modal Functions
+    function openReadme() { readmeModal.style.display = "block"; }
+    function closeReadme() { readmeModal.style.display = "none"; }
+    window.onclick = (event) => { if (event.target == readmeModal) closeReadme(); }
 
     function validateSelection() {
         let missing = [];
